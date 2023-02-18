@@ -39,7 +39,7 @@ print_blue "Configuring and building thirdparty/Pangolin ..."
 
 make_dir thirdparty
 
-INSTALL_PANGOLIN_ORIGINAL=0
+INSTALL_PANGOLIN_ORIGINAL=1
 cd thirdparty
 if [ $INSTALL_PANGOLIN_ORIGINAL -eq 1 ] ; then
     # N.B.: pay attention this will generate a module 'pypangolin' ( it does not have the methods dcam.SetBounds(...) and pangolin.DrawPoints(points, colors)  )
@@ -47,8 +47,13 @@ if [ $INSTALL_PANGOLIN_ORIGINAL -eq 1 ] ; then
         sudo apt-get install -y libglew-dev
         git clone https://github.com/stevenlovegrove/Pangolin.git pangolin
         cd pangolin
+        git checkout tags/v0.5
         git submodule init && git submodule update
+
         cd ..
+        cp ./pangolin_changes/FindFFMPEG.cmake ./pangolin/CMakeModules/
+        cp ./pangolin_changes/ffmpeg.cpp ./pangolin/src/video/drivers/
+        cp ./pangolin_changes/ffmpeg.h ./pangolin/include/pangolin/video/drivers/
     fi
     cd pangolin
     make_dir build 
@@ -56,8 +61,8 @@ if [ $INSTALL_PANGOLIN_ORIGINAL -eq 1 ] ; then
         cd build
         cmake ../ -DAVFORMAT_INCLUDE_DIR="" -DCPP11_NO_BOOST=ON $EXTERNAL_OPTION
         make -j8
-        cd build/src
-        ln -s pypangolin.*-linux-gnu.so  pangolin.linux-gnu.so
+        # cd build/src
+        # ln -s pypangolin.*-linux-gnu.so  pangolin.linux-gnu.so
     fi
 else
     # N.B.: pay attention this will generate a module 'pangolin' 
@@ -89,7 +94,9 @@ print_blue "Configuring and building thirdparty/g2o ..."
 
 cd thirdparty
 if [ ! -d g2opy ]; then
-    sudo apt-get install -y libsuitesparse-dev libeigen3-dev
+    sudo apt-get install -y libsuitesparse-dev 
+    wget http://ports.ubuntu.com/pool/universe/e/eigen3/libeigen3-dev_3.3.4-4_all.deb
+    sudo apt-get install ./libeigen3-dev_3.3.4-4_all.deb
 	git clone https://github.com/uoip/g2opy.git
     cd g2opy
     G2OPY_REVISION=5587024

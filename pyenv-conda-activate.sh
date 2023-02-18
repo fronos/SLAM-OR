@@ -9,7 +9,8 @@ if [[ -z "${ENV_NAME}" ]]; then
 fi
 
 export PYTHONPATH=""   # clean python path => for me, remove ROS stuff 
-conda activate $ENV_NAME
+source /home/$USER/anaconda3/etc/profile.d/conda.sh
+conda activate pyslam
 
 # N.B.: in order to deactivate the virtual environment run: 
 # $ conda deactivate 
