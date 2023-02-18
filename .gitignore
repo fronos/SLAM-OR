@@ -132,3 +132,14 @@ dmypy.json
 ./thirdparty/pangolin
 ./thirdparty/g2o
 ./thirdparty/lfnet/*
+
+# Archieves
+*.tar
+*.tar.gz
+*.zip
+*.deb
+
+# Models
+*.pth
+*.pb
+*.datum
